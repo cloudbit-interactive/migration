@@ -32,7 +32,7 @@ func main(){
 func ImportFile(file os.FileInfo){
 	fileData, _ := ioutil.ReadFile(file.Name())
 	scripts := strings.Split(string(fileData), ";")
-	utils.LogFile("---"+file.Name()+"---")
+	utils.LogFile("--- "+file.Name()+" ---")
 	for _, script := range scripts {
 		if strings.TrimSpace(script) == "" { continue }
 		parts := strings.Split(script, "\r\n")

@@ -5,7 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="aace35c5-5bae-4e64-8240-cc5faafea5a9" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/main.go" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/main.go" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -39,7 +39,7 @@
     <property name="last_opened_file_path" value="$USER_HOME$" />
     <property name="settings.editor.selected.configurable" value="com.goide.configuration.GoLibrariesConfigurableProvider" />
   </component>
-  <component name="RunManager" selected="Go Build.go build main.go (windows)">
+  <component name="RunManager" selected="Go Build.go build main.go (linux)">
     <configuration name="go build main.go (linux)" type="GoApplicationRunConfiguration" factoryName="Go Application">
       <module name="migration" />
       <working_directory value="$PROJECT_DIR$" />
