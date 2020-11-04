@@ -1,5 +1,5 @@
 # migration
-Simple migration script in go, inspired in laravel migration implementation
+Simple migration script wrote in golang, inspired in laravel migration implementation
 
 HOW USE
 * Open and edit config.env with DataBase info
