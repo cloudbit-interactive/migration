@@ -9,7 +9,7 @@ EXAMPLE:
 
 Files
 0000_00_00_0000_create_migrations_tablet.sql // This script should be the fist sql executed
-2020_05_01_0002_squema.sql
+2010_01_01_0000_squema.sql
 2020_05_01_0002_create_table1.sql
 2020_07_12_0000_update_table1.sql
 ````
