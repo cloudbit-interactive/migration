@@ -1,4 +1,4 @@
-# migration
+# migration [MySQL]
 Simple migration script wrote in golang, inspired in laravel migration implementation
 
 HOW USE

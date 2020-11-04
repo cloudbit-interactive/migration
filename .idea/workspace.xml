@@ -6,9 +6,9 @@
   <component name="ChangeListManager">
     <list default="true" id="aace35c5-5bae-4e64-8240-cc5faafea5a9" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/migration" beforeDir="false" afterPath="$PROJECT_DIR$/migration" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/migration.exe" beforeDir="false" afterPath="$PROJECT_DIR$/migration.exe" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/main.go" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/main.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/2010_01_01_0002_squema.sql" beforeDir="false" afterPath="$PROJECT_DIR$/2010_01_01_0002_squema.sql" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/config.env" beforeDir="false" afterPath="$PROJECT_DIR$/config.env" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -42,7 +42,7 @@
     <property name="last_opened_file_path" value="$USER_HOME$" />
     <property name="settings.editor.selected.configurable" value="com.goide.configuration.GoLibrariesConfigurableProvider" />
   </component>
-  <component name="RunManager" selected="Go Build.go build main.go (linux)">
+  <component name="RunManager" selected="Go Build.go build main.go">
     <configuration name="go build main.go (linux)" type="GoApplicationRunConfiguration" factoryName="Go Application">
       <module name="migration" />
       <working_directory value="$PROJECT_DIR$" />
