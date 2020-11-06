@@ -2,7 +2,7 @@
 Simple migration script wrote in golang, inspired in laravel migration implementation
 
 HOW USE
-* Open and edit config.env with DataBase info
+* Rename config.env.example to config.env and edit with the DataBase info
 * Create .sql script files with the next format: YYYY_MM_YY_PRIORITY_NAME.sql
 ````
 EXAMPLE: 
