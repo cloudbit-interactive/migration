@@ -46,7 +46,7 @@
     <property name="last_opened_file_path" value="$USER_HOME$" />
     <property name="settings.editor.selected.configurable" value="editor.preferences.fonts.default" />
   </component>
-  <component name="RunManager" selected="Go Build.go build main.go (linux)">
+  <component name="RunManager" selected="Go Build.go build main.go (windows)">
     <configuration name="go build main.go (linux)" type="GoApplicationRunConfiguration" factoryName="Go Application">
       <module name="migration" />
       <working_directory value="$PROJECT_DIR$" />
