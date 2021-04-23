@@ -13,7 +13,9 @@ var DB utils.DataBase
 func main(){
 	if godotenv.Load(utils.GetRootPath()+"./config.env") != nil { utils.Error("Error loading config.env file") }
 	DB = utils.NewDataBase(os.Getenv("DB_HOST"), os.Getenv("DB_NAME"), os.Getenv("DB_USER"), os.Getenv("DB_PASSWORD"), os.Getenv("DB_PORT"))
-	files, _ := ioutil.ReadDir(utils.GetRootPath())
+	filePath := utils.GetRootPath()
+	if os.Getenv("FILES_PATH") != "" { filePath += "/"+os.Getenv("FILES_PATH") }
+	files, _ := ioutil.ReadDir(filePath)
 
 	if os.Getenv("FILES_SORT") == "UPDATE_DATE_ASC" {
 		sort.Slice(files, func(i,j int) bool{ return files[i].ModTime().After(files[j].ModTime()) })
