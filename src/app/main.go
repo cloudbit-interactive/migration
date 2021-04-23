@@ -11,11 +11,9 @@ import (
 var DB utils.DataBase
 
 func main(){
-	if godotenv.Load(utils.GetRootPath()+"./config.env") != nil { utils.Error("Error loading config.env file") }
+	if godotenv.Load(utils.GetRootPath()+"/config.env") != nil { utils.Error("Error loading config.env file") }
 	DB = utils.NewDataBase(os.Getenv("DB_HOST"), os.Getenv("DB_NAME"), os.Getenv("DB_USER"), os.Getenv("DB_PASSWORD"), os.Getenv("DB_PORT"))
-	filePath := utils.GetRootPath()
-	if os.Getenv("FILES_PATH") != "" { filePath += "/"+os.Getenv("FILES_PATH") }
-	files, _ := ioutil.ReadDir(filePath)
+	files, _ := ioutil.ReadDir(GetFilePath())
 
 	if os.Getenv("FILES_SORT") == "UPDATE_DATE_ASC" {
 		sort.Slice(files, func(i,j int) bool{ return files[i].ModTime().After(files[j].ModTime()) })
@@ -32,7 +30,8 @@ func main(){
 }
 
 func ImportFile(file os.FileInfo){
-	fileData, _ := ioutil.ReadFile(file.Name())
+	fileData, err := ioutil.ReadFile(GetFilePath()+file.Name())
+	if err != nil { utils.Error(err) }
 	scripts := strings.Split(string(fileData), ";")
 	utils.LogFile("--- "+file.Name()+" ---")
 	for _, script := range scripts {
@@ -40,8 +39,13 @@ func ImportFile(file os.FileInfo){
 		parts := strings.Split(script, "\r\n")
 		script := strings.TrimSpace(strings.Join(parts, " "))
 		DB.SQL(script)
-		utils.LogFile(script)
 	}
 	DB.SQL("INSERT INTO `migrations` (`migration`) VALUES ('"+file.Name()+"')")
+}
+
+func GetFilePath() string{
+	filePath := utils.GetRootPath()
+	if os.Getenv("FILES_PATH") != "" { filePath += "/"+os.Getenv("FILES_PATH") }
+	return filePath
 }
 
