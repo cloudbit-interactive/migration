@@ -1,0 +1,1 @@
+ALTER TABLE `text` ADD COLUMN `folderUuid` VARCHAR(50) NULL DEFAULT NULL AFTER `userUuid`;

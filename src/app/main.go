@@ -1,51 +1,68 @@
 package main
 
 import (
-	"com/cuppa/utils"
+	"bufio"
+	"fmt"
+	"github.com/cloudbit-interactive/cuppago"
 	"github.com/joho/godotenv"
 	"io/ioutil"
 	"os"
 	"sort"
 	"strings"
 )
-var DB utils.DataBase
 
-func main(){
-	if godotenv.Load(utils.GetRootPath()+"/config.env") != nil { utils.Error("Error loading config.env file") }
-	DB = utils.NewDataBase(os.Getenv("DB_HOST"), os.Getenv("DB_NAME"), os.Getenv("DB_USER"), os.Getenv("DB_PASSWORD"), os.Getenv("DB_PORT"))
+var DB cuppago.DataBase
+
+func main() {
+	if godotenv.Load(cuppago.GetRootPath()+"/config.env") != nil {
+		cuppago.Error("Error loading config.env file")
+	}
+	DB = cuppago.NewDataBase(os.Getenv("DB_HOST"), os.Getenv("DB_NAME"), os.Getenv("DB_USER"), os.Getenv("DB_PASSWORD"), os.Getenv("DB_PORT"))
 	files, _ := ioutil.ReadDir(GetFilePath())
 
 	if os.Getenv("FILES_SORT") == "UPDATE_DATE_ASC" {
-		sort.Slice(files, func(i,j int) bool{ return files[i].ModTime().After(files[j].ModTime()) })
-	}else if os.Getenv("FILES_SORT") == "UPDATE_DATE_DESC" {
-		sort.Slice(files, func(i,j int) bool{ return files[i].ModTime().Before(files[j].ModTime()) })
+		sort.Slice(files, func(i, j int) bool { return files[i].ModTime().After(files[j].ModTime()) })
+	} else if os.Getenv("FILES_SORT") == "UPDATE_DATE_DESC" {
+		sort.Slice(files, func(i, j int) bool { return files[i].ModTime().Before(files[j].ModTime()) })
 	}
 
 	for _, file := range files {
-		if !strings.Contains(file.Name(), ".sql") { continue }
+		if !strings.Contains(file.Name(), ".sql") {
+			continue
+		}
 		data := DB.GetRow("migrations", "migration = '"+file.Name()+"'", "", "")
-		if utils.Value(data, "migration", "") != "" { continue }
+		if cuppago.Value(data, "migration", "") != "" {
+			continue
+		}
 		ImportFile(file)
 	}
+
+	fmt.Print("Press 'Enter' to exit...")
+	bufio.NewReader(os.Stdin).ReadBytes('\n')
 }
 
-func ImportFile(file os.FileInfo){
-	fileData, err := ioutil.ReadFile(GetFilePath()+file.Name())
-	if err != nil { utils.Error(err) }
+func ImportFile(file os.FileInfo) {
+	fileData, err := ioutil.ReadFile(GetFilePath() + file.Name())
+	if err != nil {
+		cuppago.Error(err)
+	}
 	scripts := strings.Split(string(fileData), ";")
-	utils.LogFile("--- "+file.Name()+" ---")
+	cuppago.LogFile("--- " + file.Name() + " ---")
 	for _, script := range scripts {
-		if strings.TrimSpace(script) == "" { continue }
+		if strings.TrimSpace(script) == "" {
+			continue
+		}
 		parts := strings.Split(script, "\r\n")
 		script := strings.TrimSpace(strings.Join(parts, " "))
 		DB.SQL(script)
 	}
-	DB.SQL("INSERT INTO `migrations` (`migration`) VALUES ('"+file.Name()+"')")
+	DB.SQL("INSERT INTO `migrations` (`migration`) VALUES ('" + file.Name() + "')")
 }
 
-func GetFilePath() string{
-	filePath := utils.GetRootPath()
-	if os.Getenv("FILES_PATH") != "" { filePath += "/"+os.Getenv("FILES_PATH") }
+func GetFilePath() string {
+	filePath := cuppago.GetRootPath()
+	if os.Getenv("FILES_PATH") != "" {
+		filePath += "/" + os.Getenv("FILES_PATH")
+	}
 	return filePath
 }
-
