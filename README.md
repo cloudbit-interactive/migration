@@ -21,7 +21,15 @@ Files
 #DEV - BUILD FROM WINDOWS
 ````
 FOR WIN
-> cmd /C "SET GOOS=windows&&SET GOARCH=amd64&& go build -ldflags="-w -s" -o main.exe src/app/main.go"
-FOR LINUX
-> cmd /C "SET GOOS=linux&&SET GOARCH=amd64&& go build -ldflags="-w -s" -o src/app/main main.go"
+WINDOW
+  GOOS=windows GOARCH=amd64 go build -ldflags="-w -s" -o bin/migration-win-amd64.exe src/app/main.go
+  GOOS=windows GOARCH=arm64 go build -ldflags="-w -s" -o bin/migration-win-arm64.exe src/app/main.go
+LINUX
+  GOOS=linux GOARCH=amd64 go build -ldflags="-w -s" -o bin/migration-linux-amd64 src/app/main.go
+  GOOS=linux GOARCH=arm64 go build -ldflags="-w -s" -o bin/migration-linux-arm64 src/app/main.go
+MAC
+  GOOS=darwin GOARCH=arm64 go build -ldflags="-w -s" -o bin/migration-mac-arm64 src/app/main.go
+  GOOS=darwin GOARCH=amd64 go build -ldflags="-w -s" -o bin/migration-mac-amd64 src/app/main.go
 ````
+
+
