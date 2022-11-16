@@ -15,7 +15,6 @@ var DB cuppago.DataBase
 
 func main() {
 	configPath := cuppago.GetRootPath() + "/config.env"
-	configPath = "./config.env"
 	if godotenv.Load(configPath) != nil {
 		cuppago.Error("Error loading [" + configPath + "] file")
 	}
@@ -40,10 +39,10 @@ func main() {
 		ImportFile(file)
 	}
 
-	if os.Getenv("EXIT") == "true" {
+	if strings.TrimSpace(os.Getenv("EXIT")) == "true" {
 		return
 	} else {
-		fmt.Print("Press 'Enter' to exit...")
+		fmt.Print("Press [Enter] to exit...")
 		bufio.NewReader(os.Stdin).ReadBytes('\n')
 	}
 }
