@@ -14,9 +14,12 @@ import (
 var DB cuppago.DataBase
 
 func main() {
-	if godotenv.Load(cuppago.GetRootPath()+"/config.env") != nil {
-		cuppago.Error("Error loading config.env file")
+	configPath := cuppago.GetRootPath() + "/config.env"
+	configPath = "./config.env"
+	if godotenv.Load(configPath) != nil {
+		cuppago.Error("Error loading [" + configPath + "] file")
 	}
+
 	DB = cuppago.NewDataBase(os.Getenv("DB_HOST"), os.Getenv("DB_NAME"), os.Getenv("DB_USER"), os.Getenv("DB_PASSWORD"), os.Getenv("DB_PORT"))
 	files, _ := ioutil.ReadDir(GetFilePath())
 
@@ -37,8 +40,12 @@ func main() {
 		ImportFile(file)
 	}
 
-	fmt.Print("Press 'Enter' to exit...")
-	bufio.NewReader(os.Stdin).ReadBytes('\n')
+	if os.Getenv("EXIT") == "true" {
+		return
+	} else {
+		fmt.Print("Press 'Enter' to exit...")
+		bufio.NewReader(os.Stdin).ReadBytes('\n')
+	}
 }
 
 func ImportFile(file os.FileInfo) {
@@ -61,6 +68,7 @@ func ImportFile(file os.FileInfo) {
 
 func GetFilePath() string {
 	filePath := cuppago.GetRootPath()
+	cuppago.Log(filePath)
 	if os.Getenv("FILES_PATH") != "" {
 		filePath += "/" + os.Getenv("FILES_PATH")
 	}
