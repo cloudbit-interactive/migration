@@ -26,7 +26,7 @@ WINDOW
 LINUX
   GOOS=linux GOARCH=amd64 go build -ldflags="-w -s" -o bin/migration-linux-amd64 src/app/main.go
 MAC
-  GOOS=darwin GOARCH=arm64 go build -ldflags="-w -s" -o bin/migration-mac-arm64 src/app/main.go
+  GOOS=darwin GOARCH=amd64 go build -ldflags="-w -s" -o bin/migration-mac-amd64 src/app/main.go
 ````
 
 
