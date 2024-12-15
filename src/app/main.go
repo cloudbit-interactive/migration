@@ -7,6 +7,7 @@ import (
 	"github.com/joho/godotenv"
 	"io/ioutil"
 	"os"
+	"regexp"
 	"sort"
 	"strings"
 )
@@ -18,42 +19,55 @@ func main() {
 	if godotenv.Load(configPath) != nil {
 		cuppago.Error("Error loading [" + configPath + "] file")
 	}
-
 	DB = cuppago.NewDataBase(os.Getenv("DB_HOST"), os.Getenv("DB_NAME"), os.Getenv("DB_USER"), os.Getenv("DB_PASSWORD"), os.Getenv("DB_PORT"))
 	files, _ := ioutil.ReadDir(GetFilePath())
 
-	if os.Getenv("FILES_SORT") == "UPDATE_DATE_ASC" {
-		sort.Slice(files, func(i, j int) bool { return files[i].ModTime().After(files[j].ModTime()) })
-	} else if os.Getenv("FILES_SORT") == "UPDATE_DATE_DESC" {
-		sort.Slice(files, func(i, j int) bool { return files[i].ModTime().Before(files[j].ModTime()) })
+	var fileNames []string
+	for _, file := range files {
+		fileNames = append(fileNames, file.Name())
 	}
 
-	for _, file := range files {
-		if !strings.Contains(file.Name(), ".sql") {
+	if os.Getenv("FILES_SORT") == "UPDATE_DATE_ASC" {
+		sort.Strings(fileNames)
+	} else if os.Getenv("FILES_SORT") == "UPDATE_DATE_DESC" {
+		sort.Sort(sort.Reverse(sort.StringSlice(fileNames)))
+	}
+
+	for _, fileName := range fileNames {
+		if !strings.Contains(fileName, ".sql") {
 			continue
 		}
-		data := DB.GetRow("migrations", "migration = '"+file.Name()+"'", "", "")
+		data := DB.GetRow("migrations", "migration = '"+fileName+"'", "", "")
 		if cuppago.Value(data, "migration", "") != "" {
 			continue
 		}
-		ImportFile(file)
+		ImportFile(fileName)
 	}
 
 	if strings.TrimSpace(os.Getenv("EXIT")) == "true" {
 		return
 	} else {
 		fmt.Print("Press [Enter] to exit...")
-		bufio.NewReader(os.Stdin).ReadBytes('\n')
+		_, err := bufio.NewReader(os.Stdin).ReadBytes('\n')
+		if err != nil {
+			return
+		}
 	}
 }
 
-func ImportFile(file os.FileInfo) {
-	fileData, err := ioutil.ReadFile(GetFilePath() + file.Name())
+func ImportFile(fileName string) {
+	fileData, err := ioutil.ReadFile(GetFilePath() + fileName)
 	if err != nil {
 		cuppago.Error(err)
 	}
-	scripts := strings.Split(string(fileData), ";")
-	cuppago.LogFile("--- " + file.Name() + " ---")
+	var scripts []string
+	if strings.Contains(fileName, "no_split") {
+		scripts = []string{RemoveDelimiters(string(fileData))}
+	} else {
+		scripts = strings.Split(RemoveDelimiters(string(fileData)), ";")
+	}
+
+	cuppago.LogFile("--- " + fileName + " ---")
 	for _, script := range scripts {
 		if strings.TrimSpace(script) == "" {
 			continue
@@ -62,7 +76,7 @@ func ImportFile(file os.FileInfo) {
 		script := strings.TrimSpace(strings.Join(parts, " "))
 		DB.SQL(script)
 	}
-	DB.SQL("INSERT INTO `migrations` (`migration`) VALUES ('" + file.Name() + "')")
+	DB.SQL("INSERT INTO `migrations` (`migration`) VALUES ('" + fileName + "')")
 }
 
 func GetFilePath() string {
@@ -72,4 +86,12 @@ func GetFilePath() string {
 		filePath += "/" + os.Getenv("FILES_PATH")
 	}
 	return filePath
+}
+
+func RemoveDelimiters(sql string) string {
+	delimiterPattern := `(?i)DELIMITER\s+\S+`
+	re := regexp.MustCompile(delimiterPattern)
+	sql = re.ReplaceAllString(sql, "")
+	sql = strings.ReplaceAll(sql, "//", "")
+	return sql
 }

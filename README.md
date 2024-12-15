@@ -13,6 +13,7 @@ Simple migration script wrote in golang, inspired in laravel migration implement
 2020_11_03_0001_create_folder_table.sql       // A migration script file
 2020_11_03_0002_alter_text_table.sql          // Another file with migration scripts
 2021_01_03_0001_insert_in_users_table.sql     // Another file with migration scripts
+2021_01_03_0001_procedure_no_split.sql        // will avoid split the script in sub queries
 ```
 
 * Rename **config.env.example** to **config.env** and set your project values
