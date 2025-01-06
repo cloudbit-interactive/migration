@@ -61,7 +61,7 @@ func ImportFile(fileName string) {
 		cuppago.Error(err)
 	}
 	var scripts []string
-	if strings.Contains(fileName, "no_split") {
+	if strings.Contains(fileName, "[NO_SPLIT]") {
 		scripts = []string{RemoveDelimiters(string(fileData))}
 	} else {
 		scripts = strings.Split(string(fileData), ";")

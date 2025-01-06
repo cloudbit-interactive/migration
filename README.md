@@ -8,12 +8,12 @@ Simple migration script wrote in golang, inspired in laravel migration implement
 # Example: 
 * Create a folder for your sql migration files example: **sqlFiles/** and put all yours **.sql** files inside
 ```
-0000_00_00_0000_create_migrations_table.sql   // This script should be the fist sql executed
-2010_01_01_0000_squema.sql                    // Your initial squema
-2020_11_03_0001_create_folder_table.sql       // A migration script file
-2020_11_03_0002_alter_text_table.sql          // Another file with migration scripts
-2021_01_03_0001_insert_in_users_table.sql     // Another file with migration scripts
-2021_01_03_0001_procedure_no_split.sql        // will avoid split the script in sub queries
+0000_00_00_0000_create_migrations_table.sql                       // This script should be the fist sql executed
+2010_01_01_0000_squema.sql                                        // Your initial squema
+2020_11_03_0001_create_folder_table.sql                           // A migration script file
+2020_11_03_0002_alter_text_table.sql                              // Another file with migration scripts
+2021_01_03_0001_insert_in_users_table.sql                         // Another file with migration scripts
+2021_02_01_0001_procedure_multiply_numbers_[NO_SPLIT].sql         // will avoid split the script in sub queries
 ```
 
 * Rename **config.env.example** to **config.env** and set your project values
